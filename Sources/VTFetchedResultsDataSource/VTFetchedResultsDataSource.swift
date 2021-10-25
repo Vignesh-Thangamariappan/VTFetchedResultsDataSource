@@ -20,7 +20,6 @@ class VTFetchedResultsCollectionViewDataSource<FetchRequestResult: NSFetchReques
             cacheName: nil
         )
         super.init()
-        
         fetchedResultsController.delegate = self
     }
     

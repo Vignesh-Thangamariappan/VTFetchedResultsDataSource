@@ -1,7 +1,7 @@
 import UIKit
 import CoreData
 
-class VTFetchedResultsCollectionViewDataSource<FetchRequestResult: NSFetchRequestResult>: NSObject, UICollectionViewDataSource, NSFetchedResultsControllerDelegate {
+public class VTFetchedResultsCollectionViewDataSource<FetchRequestResult: NSFetchRequestResult>: NSObject, UICollectionViewDataSource, NSFetchedResultsControllerDelegate {
     
     let fetchedResultsController: NSFetchedResultsController<FetchRequestResult>
     weak var collectionView: UICollectionView?
@@ -37,20 +37,20 @@ class VTFetchedResultsCollectionViewDataSource<FetchRequestResult: NSFetchReques
     
     // MARK: - UICollectionViewDataSource
     
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    public func numberOfSections(in collectionView: UICollectionView) -> Int {
         guard let numberOfSections = fetchedResultsController.sections?.count, numberOfSections > 0 else {
             return 1
         }
         return numberOfSections
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let sections = fetchedResultsController.sections, sections.isNotEmpty else { return 0 }
         
         return sections[section].numberOfObjects
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let delegate = delegate {
             return delegate.collectionView(collectionView, cellForItemAt: indexPath)
         } else {
@@ -58,7 +58,7 @@ class VTFetchedResultsCollectionViewDataSource<FetchRequestResult: NSFetchReques
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let delegate = delegate else {
             return UICollectionReusableView()
         }
@@ -67,13 +67,13 @@ class VTFetchedResultsCollectionViewDataSource<FetchRequestResult: NSFetchReques
     
     // MARK: - NSFetchedResultsControllerDelegate
     
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+    public func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         operationQueue = OperationQueue()
         operationQueue.qualityOfService = .userInteractive
         clearUpdates()
     }
     
-    func controller(
+    public func controller(
         _ controller: NSFetchedResultsController<NSFetchRequestResult>,
         didChange sectionInfo: NSFetchedResultsSectionInfo,
         atSectionIndex sectionIndex: Int,
@@ -94,7 +94,7 @@ class VTFetchedResultsCollectionViewDataSource<FetchRequestResult: NSFetchReques
         }
     }
     
-    func controller(
+    public func controller(
         _ controller: NSFetchedResultsController<NSFetchRequestResult>,
         didChange anObject: Any,
         at indexPath: IndexPath?,
@@ -122,7 +122,7 @@ class VTFetchedResultsCollectionViewDataSource<FetchRequestResult: NSFetchReques
         }
     }
     
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+    public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         DispatchQueue.main.async {
             self.collectionView?.performBatchUpdates({
                 self.performBatchUpdatesForSections(self.sectionUpdates)
